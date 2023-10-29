@@ -42,8 +42,8 @@ class CountVectorizer:
         def del_punct(str_arg: str):
             return str_arg.translate(str.maketrans('', '', punctuation))
 
-        for index_row in range(len(corpus)):
-            corpus[index_row] = del_punct(corpus[index_row]).lower()
+        for index_row, row in enumerate(corpus):
+            corpus[index_row] = del_punct(row).lower()
 
         return corpus
 
@@ -63,6 +63,12 @@ class CountVectorizer:
         """
         # Preprocess the input corpus
         corpus = self.processing_string(corpus)
+
+        # Checking to see if there are meanings in the vocabulary
+        if self.vocab:
+            print('Warning: The vocabulary already contained meanings and was'
+                  ' retrained again.')
+            self.vocab = {}
 
         # Populate the vocabulary with words from the corpus
         for row in corpus:
